@@ -6,6 +6,7 @@ use Peridot\Core\TestInterface;
 use Peridot\Reporter\AbstractBaseReporter;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
 use SebastianBergmann\CodeCoverage\Filter;
+use SebastianBergmann\CodeCoverage\Driver\Selector;
 
 /**
  * Class AbstractCodeCoverageReporter
@@ -38,8 +39,13 @@ abstract class AbstractCodeCoverageReporter extends AbstractBaseReporter impleme
      */
     public function init()
     {
+        $selector = new Selector();
+
         $this->filter = new Filter();
-        $this->coverage = new CodeCoverage(null, $this->filter);
+        $this->coverage = new CodeCoverage(
+            $selector->forLineCoverage($this->filter),
+            $this->filter,
+        );
 
         $this->eventEmitter->on('runner.start', [$this, 'onRunnerStart']);
         $this->eventEmitter->on('runner.end', [$this, 'onRunnerEnd']);
@@ -72,7 +78,7 @@ abstract class AbstractCodeCoverageReporter extends AbstractBaseReporter impleme
      */
     public function addDirectoryToWhitelist($directory, $suffix = '.php', $prefix = '')
     {
-        $this->filter->addDirectoryToWhitelist($directory, $suffix, $prefix);
+        $this->filter->includeDirectory($directory, $suffix, $prefix);
         return $this;
     }
 

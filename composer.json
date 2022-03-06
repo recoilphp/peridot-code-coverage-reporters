@@ -13,9 +13,15 @@
     }
   ],
   "require": {
-    "peridot-php/peridot": "^1",
-    "phpunit/php-code-coverage": "^4|^5"
+    "peridot-php/peridot": "dev-php-8 as 1.999.999",
+    "phpunit/php-code-coverage": "^9"
   },
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/recoilphp/peridot"
+    }
+  ],
   "autoload": {
     "psr-4": {
       "Peridot\\Reporter\\": "src"
